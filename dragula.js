@@ -231,11 +231,9 @@ function dragula(initialContainers, options) {
   }
 
   function release(e) {
-    // console.log('release')
     ungrab();
 
     if (!drake.dragging) {
-      // console.log('!drake.dragging')
       return;
     }
     var item = _copy || _item;
@@ -244,30 +242,22 @@ function dragula(initialContainers, options) {
     var elementBehindCursor = getElementBehindPoint(_mirror, clientX, clientY);
     var dropTarget = findDropTarget(elementBehindCursor, clientX, clientY);
     if (dropTarget && ((_copy && o.copySortSource) || (!_copy || dropTarget !== _source) || (_copy && dropTarget === _source))) {
-      // console.log('drop')
       drop(item, dropTarget);
     } else if (o.removeOnSpill) {
-      // console.log('removeOnSpill')
       remove();
     } else {
-      // console.log('cancel')
       cancel();
     }
   }
 
   function drop(item, target) {
-    // console.log('DROP');
     var parent = getParent(item);
-    // console.log('getParent WHILE DROPPPING', parent);
     if (_copy && o.copySortSource && target === _source) {
-      // console.log('remove child');
       parent.removeChild(_item);
     }
     if (isInitialPlacement(target) && !_copy) {
-      // console.log('cancel');
       drake.emit('cancel', item, _source, _source);
     } else {
-      // // ('drop');
       drake.emit('drop', item, target, _source, _currentSibling);
     }
     cleanup();
@@ -365,7 +355,6 @@ function dragula(initialContainers, options) {
   }
 
   function drag(e) {
-    // console.log('drag');
     if (!_mirror) {
       return;
     }
@@ -382,28 +371,17 @@ function dragula(initialContainers, options) {
     var item = _copy || _item;
     var elementBehindCursor = getElementBehindPoint(_mirror, clientX, clientY);
     var dropTarget = findDropTarget(elementBehindCursor, clientX, clientY);
-    // console.log('dropTarget', dropTarget);
     var changed = dropTarget !== null && dropTarget !== _lastDropTarget;
-    // console.log('changed', changed)
     if (changed || dropTarget === null) {
       out();
       _lastDropTarget = dropTarget;
       over();
     }
     var parent = getParent(item);
-    // if (dropTarget === _source && _copy && !o.copySortSource) {
-    //   console.log('dropTarget === _source');
-    //   if (parent) {
-    //     parent.removeChild(item);
-    //   }
-    //   return;
-    // }
     var reference;
     var immediate = getImmediateChild(dropTarget, elementBehindCursor);
-    // console.log('immediate', immediate);
     if (immediate !== null) {
       reference = getReference(dropTarget, immediate, clientX, clientY);
-      // console.log('reference', reference);
     } else if (o.revertOnSpill === true && !_copy) {
       reference = _initialSibling;
       dropTarget = _source;

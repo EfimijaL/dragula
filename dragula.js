@@ -377,6 +377,14 @@ function dragula(initialContainers, options) {
       _lastDropTarget = dropTarget;
       over();
     }
+
+    if (dropTarget && dropTarget.hasAttribute('can-copy')) {
+      var canCopy = dropTarget.getAttribute('can-copy');
+      if (canCopy === 'false') {
+        return;
+      }
+    }
+
     var parent = getParent(item);
     var reference;
     var immediate = getImmediateChild(dropTarget, elementBehindCursor);

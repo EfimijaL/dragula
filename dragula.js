@@ -381,13 +381,15 @@ function dragula(initialContainers, options) {
       over();
     }
 
-    if (dropTarget && dropTarget === _source) {
+    // element can't be copied in the same container
+    if (dropTarget && dropTarget === _source && _copy) {
       _canCopyInTheSameContainer = dropTarget.hasAttribute('can-copy');
       if (_canCopyInTheSameContainer === false) {
         return;
       }
     }
 
+    // element can be copied only if it has attribute 'can-copy'
     if (dropTarget && dropTarget.hasAttribute('can-copy')) {
       var canCopy = dropTarget.getAttribute('can-copy');
       if (canCopy === 'false') {
@@ -414,6 +416,7 @@ function dragula(initialContainers, options) {
       reference !== item &&
       reference !== nextEl(item)
     ) {
+      // make shadow before dropping the element
       _currentSibling = reference;
       dropTarget.insertBefore(item, reference);
       drake.emit('shadow', item, dropTarget, _source);
